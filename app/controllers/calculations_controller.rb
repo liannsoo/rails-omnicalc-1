@@ -29,13 +29,14 @@ def new_square
   end
 
   def payment
-    @apr = params[:apr].to_f / 100 / 12
-    @years = params[:years].to_i
+    @apr = params[:apr].to_f
+    @monthly_rate = @apr / 100 / 12
+    @years = params[:years].to_f
     @principal = params[:principal].to_f
 
-    numerator = @apr * @principal
-    denominator = 1 - (1 + @apr) ** -(@years * 12)
+    numerator = @monthly_rate * @principal
+    denominator = 1 - (1 + @monthly_rate) ** -(@years * 12)
 
-    @monthly_payment = numerator / denominator
+    @monthly_payment = (numerator / denominator).to_fs(:currency)
   end
 end
